@@ -1,0 +1,222 @@
+syntax = "proto3";
+
+package crm;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_multiple_files = true;
+option java_outer_classname = "CrmProto";
+option java_package = "dev.crashteam.crm";
+
+message UserContact {
+  string email = 1;
+  int64 phone = 2;
+  optional string inn = 3;
+}
+
+message UserIdentity {
+  string first_name = 1; // Ex: Vitaliy
+}
+
+message UserPhoneNumber {
+  int64 phone_number = 1; // Ex: 79033048560
+}
+
+message CreateLeadRequest {
+  UserIdentity user_identity = 1;
+  UserPhoneNumber user_phone_number = 2;
+  string pipeline_id = 3;
+  string lead_name = 4;
+}
+
+message SMSUserMessage {
+  string sender_name = 1;
+  repeated string receiver_phone_number = 2;
+  string text = 3;
+  optional google.protobuf.Timestamp send_at_time = 4;
+}
+
+message SMSUserAuthMessage {
+  string receiver_phone_number = 1;
+}
+
+message CreateLeadResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNKNOWN = 0;
+      ERROR_CODE_USER_LEAD_ALREADY_EXISTS = 1;
+    }
+  }
+}
+
+message UpdateUserContactInfoRequest {
+  string user_id = 1;
+  oneof payload {
+    InitialUpdateContactInfoPayload initial_update_contact_info_payload = 10;
+    ApproveUpdateContactInfoPayload approve_update_contact_info_payload = 11;
+  }
+
+  message InitialUpdateContactInfoPayload {
+    string email = 1;
+    int64 phone_number = 2;
+    optional string inn = 3;
+  }
+  message ApproveUpdateContactInfoPayload {
+    string approve_code = 1;
+  }
+}
+
+enum UpdateUserContactInfoState {
+  UPDATE_USER_CONTACT_INFO_STATE_UNKNOWN = 0;
+  UPDATE_USER_CONTACT_INFO_STATE_NOT_VERIFIED = 1;
+  UPDATE_USER_CONTACT_INFO_STATE_VERIFIED = 2;
+}
+
+message UpdateUserContactInfoResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+    UserContact user_contact = 1;
+    UpdateUserContactInfoState update_user_contact_info_state = 2;
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNKNOWN = 0;
+      ERROR_CODE_INVALID_APPROVAL_CODE = 1;
+      ERROR_CODE_INVALID_SEQUENCE = 2;
+    }
+  }
+}
+
+message SendUserMessageRequest {
+  string user_id = 1;
+  oneof message {
+    SMSUserMessage sms_user_message = 10;
+  }
+}
+
+message SendUserMessageResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNKNOWN = 0;
+      ERROR_CODE_BAD_PARAMS = 1;
+    }
+  }
+}
+
+message SendUserAuthCodeRequest {
+  string user_id = 1;
+  oneof auth_message {
+    SMSUserAuthMessage sms_user_auth_message = 10;
+  }
+}
+
+message SendUserAuthCodeResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNKNOWN = 0;
+      ERROR_CODE_BAD_PARAMS = 1;
+      ERROR_CODE_LIMIT_EXCEEDED = 2;
+    }
+  }
+}
+
+message CheckUserAuthCodeRequest {
+  string user_id = 1;
+  int32 auth_code = 2;
+}
+
+message CheckUserAuthCodeResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNKNOWN = 0;
+      ERROR_CODE_INVALID_AUTH_CODE = 1;
+    }
+  }
+}
+
+message GetUserContactInfoRequest {
+  string user_id = 1;
+}
+
+message GetUserContactInfoResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+    UserContact user_contact = 1;
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNKNOWN = 0;
+      ERROR_CODE_USER_NOT_FOUND = 1;
+    }
+  }
+}
+
+service CrmService {
+  rpc createLead(CreateLeadRequest) returns (CreateLeadResponse);
+  rpc getUserContactInfo(GetUserContactInfoRequest) returns (GetUserContactInfoResponse);
+  rpc updateUserContactInfo(UpdateUserContactInfoRequest) returns (UpdateUserContactInfoResponse);
+  rpc sendUserMessage(SendUserMessageRequest) returns (SendUserMessageResponse);
+  rpc sendUserAuthCode(SendUserAuthCodeRequest) returns (SendUserAuthCodeResponse);
+  rpc checkUserAuthCode(CheckUserAuthCodeRequest) returns (CheckUserAuthCodeResponse);
+}
