@@ -24,11 +24,10 @@ message UserPhoneNumber {
 }
 
 message CreateLeadRequest {
-  string user_id = 1;
-  UserIdentity user_identity = 2;
-  UserPhoneNumber user_phone_number = 3;
-  string pipeline_id = 4;
-  string lead_name = 5;
+  UserIdentity user_identity = 1;
+  UserPhoneNumber user_phone_number = 2;
+  string pipeline_id = 3;
+  string lead_name = 4;
 }
 
 message SMSUserMessage {
