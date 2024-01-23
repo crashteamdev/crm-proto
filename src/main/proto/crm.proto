@@ -17,8 +17,6 @@ message UserContact {
 
 message UserIdentity {
   string first_name = 1; // Ex: Vitaliy
-  string last_name = 2; // Ex: Banin
-  string middle_name = 3; // Ex: Vyacheslavovich
 }
 
 message UserPhoneNumber {
