@@ -66,9 +66,25 @@ message CreateLeadResponse {
 
 message UpdateUserContactInfoRequest {
   string user_id = 1;
-  string email = 2;
-  int64 phone_number = 3;
-  optional string inn = 4;
+  oneof payload {
+    InitialUpdateContactInfoPayload initial_update_contact_info_payload = 10;
+    ApproveUpdateContactInfoPayload approve_update_contact_info_payload = 11;
+  }
+
+  message InitialUpdateContactInfoPayload {
+    string email = 1;
+    int64 phone_number = 2;
+    optional string inn = 3;
+  }
+  message ApproveUpdateContactInfoPayload {
+    string approve_code = 1;
+  }
+}
+
+enum UpdateUserContactInfoState {
+  UPDATE_USER_CONTACT_INFO_STATE_UNKNOWN = 0;
+  UPDATE_USER_CONTACT_INFO_STATE_NOT_VERIFIED = 1;
+  UPDATE_USER_CONTACT_INFO_STATE_VERIFIED = 2;
 }
 
 message UpdateUserContactInfoResponse {
@@ -78,6 +94,7 @@ message UpdateUserContactInfoResponse {
   }
 
   message SuccessResponse {
+    UpdateUserContactInfoState update_user_contact_info_state = 1;
   }
 
   message ErrorResponse {
@@ -86,6 +103,8 @@ message UpdateUserContactInfoResponse {
 
     enum ErrorCode {
       ERROR_CODE_UNKNOWN = 0;
+      ERROR_CODE_INVALID_APPROVAL_CODE = 1;
+      ERROR_CODE_INVALID_SEQUENCE = 2;
     }
   }
 }
