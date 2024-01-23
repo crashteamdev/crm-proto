@@ -94,7 +94,8 @@ message UpdateUserContactInfoResponse {
   }
 
   message SuccessResponse {
-    UpdateUserContactInfoState update_user_contact_info_state = 1;
+    UserContact user_contact = 1;
+    UpdateUserContactInfoState update_user_contact_info_state = 2;
   }
 
   message ErrorResponse {
