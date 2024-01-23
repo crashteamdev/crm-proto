@@ -189,8 +189,34 @@ message CheckUserAuthCodeResponse {
   }
 }
 
+message GetUserContactInfoRequest {
+  string user_id = 1;
+}
+
+message GetUserContactInfoResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+    UserContact user_contact = 1;
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNKNOWN = 0;
+      ERROR_CODE_USER_NOT_FOUND = 1;
+    }
+  }
+}
+
 service CrmService {
   rpc createLead(CreateLeadRequest) returns (CreateLeadResponse);
+  rpc getUserContactInfo(GetUserContactInfoRequest) returns (GetUserContactInfoResponse);
   rpc updateUserContactInfo(UpdateUserContactInfoRequest) returns (UpdateUserContactInfoResponse);
   rpc sendUserMessage(SendUserMessageRequest) returns (SendUserMessageResponse);
   rpc sendUserAuthCode(SendUserAuthCodeRequest) returns (SendUserAuthCodeResponse);
