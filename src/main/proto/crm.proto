@@ -26,8 +26,6 @@ message UserPhoneNumber {
 message CreateLeadRequest {
   UserIdentity user_identity = 1;
   UserPhoneNumber user_phone_number = 2;
-  string pipeline_id = 3;
-  string lead_name = 4;
 }
 
 message SMSUserMessage {
