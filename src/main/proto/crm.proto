@@ -89,7 +89,7 @@ message UpdateUserContactInfoResponse {
   }
 
   message SuccessResponse {
-    UserContact user_contact = 1;
+    optional UserContact user_contact = 1;
     UpdateUserContactInfoState update_user_contact_info_state = 2;
   }
 
