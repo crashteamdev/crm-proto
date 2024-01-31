@@ -26,6 +26,7 @@ message UserPhoneNumber {
 message CreateLeadRequest {
   UserIdentity user_identity = 1;
   UserPhoneNumber user_phone_number = 2;
+  string email = 3;
 }
 
 message SMSUserMessage {
