@@ -24,9 +24,30 @@ message UserPhoneNumber {
 }
 
 message CreateLeadRequest {
-  UserIdentity user_identity = 1;
-  UserPhoneNumber user_phone_number = 2;
-  string email = 3;
+  oneof payload {
+      CreateDemoLead create_demo_lead = 1;
+      CreateFeedbackLead create_feedback_lead = 2;
+      CreateServiceLead create_service_lead = 3;
+  }
+
+  message CreateDemoLead {
+    UserIdentity user_identity = 1;
+    UserPhoneNumber user_phone_number = 2;
+    string user_email = 3;
+  }
+
+  message CreateFeedbackLead {
+    UserIdentity user_identity = 1;
+    UserPhoneNumber user_phone_number = 2;
+    string user_email = 3;
+    string feedback_message = 4;
+  }
+
+  message CreateServiceLead {
+    UserIdentity user_identity = 1;
+    UserPhoneNumber user_phone_number = 2;
+    string user_email = 3;
+  }
 }
 
 message SMSUserMessage {
