@@ -47,6 +47,7 @@ message CreateLeadRequest {
     UserIdentity user_identity = 1;
     UserPhoneNumber user_phone_number = 2;
     string user_email = 3;
+    string service_name = 4;
   }
 }
 
