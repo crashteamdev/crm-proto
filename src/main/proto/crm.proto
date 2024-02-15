@@ -34,6 +34,7 @@ message CreateLeadRequest {
     UserIdentity user_identity = 1;
     UserPhoneNumber user_phone_number = 2;
     string user_email = 3;
+    optional string telegram_username = 4;
   }
 
   message CreateFeedbackLead {
@@ -41,6 +42,7 @@ message CreateLeadRequest {
     UserPhoneNumber user_phone_number = 2;
     string user_email = 3;
     string feedback_message = 4;
+    optional string telegram_username = 5;
   }
 
   message CreateServiceLead {
@@ -48,6 +50,7 @@ message CreateLeadRequest {
     UserPhoneNumber user_phone_number = 2;
     string user_email = 3;
     string service_name = 4;
+    optional string telegram_username = 5;
   }
 }
 
