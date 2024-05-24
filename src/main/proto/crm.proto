@@ -25,9 +25,10 @@ message UserPhoneNumber {
 
 message CreateLeadRequest {
   oneof payload {
-      CreateDemoLead create_demo_lead = 1;
-      CreateFeedbackLead create_feedback_lead = 2;
-      CreateServiceLead create_service_lead = 3;
+    CreateDemoLead create_demo_lead = 1;
+    CreateFeedbackLead create_feedback_lead = 2;
+    CreateServiceLead create_service_lead = 3;
+    UtmTag utm_tag = 4;
   }
 
   message CreateDemoLead {
@@ -51,6 +52,14 @@ message CreateLeadRequest {
     string user_email = 3;
     string service_name = 4;
     optional string telegram_username = 5;
+  }
+
+  message UtmTag {
+    optional string utm_source = 1;
+    optional string utm_medium = 2;
+    optional string utm_campaign = 3;
+    optional string utm_content = 4;
+    optional string utm_term = 5;
   }
 }
 
