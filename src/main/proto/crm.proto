@@ -28,8 +28,8 @@ message CreateLeadRequest {
     CreateDemoLead create_demo_lead = 1;
     CreateFeedbackLead create_feedback_lead = 2;
     CreateServiceLead create_service_lead = 3;
-    UtmTag utm_tag = 4;
   }
+  UtmTag utm_tag = 4;
 
   message CreateDemoLead {
     UserIdentity user_identity = 1;
