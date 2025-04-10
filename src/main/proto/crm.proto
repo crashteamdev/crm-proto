@@ -246,6 +246,44 @@ message GetUserContactInfoResponse {
   }
 }
 
+message RequestDemoAccess {
+  UserIdentity user_identity = 1;
+  UserPhoneNumber user_phone_number = 2;
+  string user_email = 3;
+  optional string telegram_username = 4;
+  optional UtmTag utm_tag = 5;
+
+  message UtmTag {
+    optional string utm_source = 1;
+    optional string utm_medium = 2;
+    optional string utm_campaign = 3;
+    optional string utm_content = 4;
+    optional string utm_term = 5;
+  }
+}
+
+message RequestDemoAccessResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNKNOWN = 0;
+      ERROR_CODE_DUPLICATE = 1;
+      ERROR_CODE_BAD_REQUEST = 2;
+    }
+  }
+}
+
+
 service CrmService {
   rpc createLead(CreateLeadRequest) returns (CreateLeadResponse);
   rpc getUserContactInfo(GetUserContactInfoRequest) returns (GetUserContactInfoResponse);
@@ -253,4 +291,5 @@ service CrmService {
   rpc sendUserMessage(SendUserMessageRequest) returns (SendUserMessageResponse);
   rpc sendUserAuthCode(SendUserAuthCodeRequest) returns (SendUserAuthCodeResponse);
   rpc checkUserAuthCode(CheckUserAuthCodeRequest) returns (CheckUserAuthCodeResponse);
+  rpc requestDemoAccess(RequestDemoAccess) returns (RequestDemoAccessResponse);
 }
