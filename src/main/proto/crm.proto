@@ -269,6 +269,7 @@ message RequestDemoAccessResponse {
   }
 
   message SuccessResponse {
+    string demo_access_token = 1;
   }
 
   message ErrorResponse {
@@ -283,6 +284,29 @@ message RequestDemoAccessResponse {
   }
 }
 
+message CheckDemoTokenRequest {
+  string demo_access_token = 1;
+}
+
+message CheckDemoTokenResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNKNOWN = 0;
+      ERROR_CODE_INVALID = 1;
+    }
+  }
+}
 
 service CrmService {
   rpc createLead(CreateLeadRequest) returns (CreateLeadResponse);
@@ -292,4 +316,5 @@ service CrmService {
   rpc sendUserAuthCode(SendUserAuthCodeRequest) returns (SendUserAuthCodeResponse);
   rpc checkUserAuthCode(CheckUserAuthCodeRequest) returns (CheckUserAuthCodeResponse);
   rpc requestDemoAccess(RequestDemoAccess) returns (RequestDemoAccessResponse);
+  rpc checkDemoToken(CheckDemoTokenRequest) returns (CheckDemoTokenResponse);
 }
