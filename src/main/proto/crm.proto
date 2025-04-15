@@ -247,7 +247,6 @@ message GetUserContactInfoResponse {
 }
 
 message RequestDemoAccess {
-  string general_user_id = 6;
   UserIdentity user_identity = 1;
   UserPhoneNumber user_phone_number = 2;
   string user_email = 3;
@@ -287,6 +286,7 @@ message RequestDemoAccessResponse {
 
 message CheckDemoTokenRequest {
   string demo_access_token = 1;
+  string general_user_id = 2;
 }
 
 message CheckDemoTokenResponse {
